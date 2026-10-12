@@ -1,10 +1,10 @@
 import numpy as np
 
 # generate a random array. Max value is 10, length is 5
-a = np.random.randint(10, size=5)
+a = np.random.randint(20, size=10)
 
 # generate a random array. Max value is 10, length is 5
-b = np.random.randint(10, size=5)
+b = np.random.randint(20, size=10)
 
 # add the two arrays, piece-wise
 c = a + b
@@ -17,3 +17,5 @@ added_squares = a ** 2 + b ** 2
 
 # sum the resulting array to a single value
 num = sum(added_squares)
+print(c)
+

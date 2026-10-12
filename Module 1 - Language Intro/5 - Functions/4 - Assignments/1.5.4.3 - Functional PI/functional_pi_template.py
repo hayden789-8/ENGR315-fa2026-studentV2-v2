@@ -10,9 +10,32 @@ def my_pi(target_error):
     """
 
     ### YOUR CODE HERE ###
+#starting values
+    a=1
+    b=1/math.sqrt(2)
+    t=1/4
+    p=1
+
+    #calculate the first approximation
+    pi_approx=((a+b)**2)/(4*t)
+
+    #keep calculating until the error is small enough
+    while abs(math.pi-pi_approx)>=abs(target_error):
+
+        #save the old value of a
+        old_a=a
+
+        #new values
+        a=(a+b)/2
+        b=math.sqrt(old_a*b)
+        t=t-p*(old_a-a)**2
+        p=2*p
+
+        #calculate new approximation of pi
+        pi_approx=((a+b)**2)/(4*t)
 
     # change this so an actual value is returned
-    return 0
+    return pi_approx
 
 
 
