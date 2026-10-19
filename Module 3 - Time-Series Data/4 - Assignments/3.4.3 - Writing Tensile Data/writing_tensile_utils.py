@@ -70,8 +70,14 @@ def calculate_stress(force, sample_diameter):
     """
 
     # copy your calculate_stress() from Tensile Testing here
+   
+    #area(mm2)
+    area=math.pi*sample_diameter**2/4
 
-    return None
+    #stress(mpa)
+    stress=force*1000/area
+
+    return stress
 
 
 def calculate_max_strength_strain(strain, stress):
@@ -86,7 +92,13 @@ def calculate_max_strength_strain(strain, stress):
 
     # copy your calculate_max_strength_strain() from Tensile Testing here
 
-    return -1, -1
+ #max stress
+    ultimate_tensile_strength=np.max(stress)
+
+    #max strain
+    fracture_strain=np.max(strain)
+
+    return ultimate_tensile_strength, fracture_strain
 
 
 def calculate_elastic_modulus(strain, stress):
@@ -103,7 +115,25 @@ def calculate_elastic_modulus(strain, stress):
 
     # copy your calculate_elastic_modulus() from Tensile Testing here
 
-    return None, None, None
+#40% peak stress
+    secant_strain=0.4*np.max(stress)
+
+ #difference between stress and 40% stress
+    diffs=np.abs(stress[:np.argmax(stress)+1]-secant_strain)
+
+ #index closest to 40% stress
+    linear_index=np.argmin(diffs)
+
+    #stress region
+    linear_stress=stress[0:linear_index]
+
+    #strain region
+    linear_strain=strain[0:linear_index]
+
+    #slope/intercept
+    slope,intercept=np.polyfit(linear_strain,linear_stress,1)
+
+    return linear_index,slope,intercept
 
 
 def calculate_percent_offset(slope, strain, stress):
@@ -119,9 +149,21 @@ def calculate_percent_offset(slope, strain, stress):
 
     # copy your calculate_percent_offset() from Tensile Testing here
 
-    return None, -1
+#0ffset
+    offset=0.002
 
+    #0.2% offset line
+    offset_line=slope*(strain-offset)
 
+    #absolute difference between curves
+    distance=np.abs(stress-offset_line)
+
+    #index smallest difference
+    intercept_index=np.argmin(distance)
+
+    return offset_line,intercept_index
+
+    
 def calculate_yield_strength(strain, stress, modulus):
     """
     Determine the yield strength (MPa) via the 0.2% offset method.

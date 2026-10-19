@@ -61,8 +61,12 @@ def calculate_stress(force, sample_diameter):
     """
 
     ### YOUR SOLUTION FROM STEP 1 TEMPLATE HERE ###
+#area(mm2)
+    area=math.pi*sample_diameter**2/4
 
-    return None
+#stress(mpa)
+    stress=force*1000/area
+    return stress
 
 
 def calculate_max_strength_strain(strain, stress):
@@ -75,9 +79,15 @@ def calculate_max_strength_strain(strain, stress):
     Fracture Strain: the maximum strain experienced before fracture
     """
 
-    ### YOUR SOLUTION FROM STEP 2 TEMPLATE HERE ###
+############## YOUR SOLUTION FROM STEP 2 TEMPLATE HERE ###
 
-    return -1, -1
+#max stress
+    ultimate_tensile_strength=np.max(stress)
+
+#max strain
+    fracture_strain=np.max(strain)
+
+    return ultimate_tensile_strength,fracture_strain
 
 def calculate_elastic_modulus(strain, stress):
     """
@@ -99,33 +109,40 @@ def calculate_elastic_modulus(strain, stress):
     # Step 3a: find the point that is 40% of peak stress
     # use from 0 to that value to create a linear plot
 
-    ### your code below ###
-    secant_strain = -1
+   ############### your code below ##################3
+    
+    #40% of peak stress
+    secant_strain =0.4*np.max(stress)
 
     # Step 3b: find the intersection between 40% line and the curvey
     # take the abs() difference between the stress vector and secant_strain point
 
-    ### your code below ###
-    diffs = -1
+   ###################### your code below ######################
+    #abs dif of strain/secant strain
+    diffs =np.abs(stress[:np.argmax(stress)+1]-secant_strain)
 
     # use np.argmin() to find the minimum of the diffs array.
     # this will be the INDEX of the point in stress-strain that is closest to
     # secant_strain intersection
 
     # uncomment the line below and replace with your own
-    # linear_index = ....
+    linear_index =np.argmin(diffs)
 
     # Step 3c: down select to linear region for stress and strain
     # using list slicing. Uncomment lines below
-    # linear_stress = stress[# list slice#]
-    # linear_strain = strain[#list slice#]
+    
+    # stress in region 
+    linear_stress =stress[0:linear_index]
+   
+   #strain in regain
+    linear_strain =strain[0:linear_index]
 
     # Step 3d: find least squares fit to a line in the linear region
     # use 1-degree polynominal fit (line) from np.polyfit
     # save the slope and intercept so we can plot the line later
 
     # uncomment the line below and call np.polyfit
-    # slope, intercept = ....
+    slope, intercept =np.polyfit(linear_strain,linear_stress,1)
 
     return linear_index, slope, intercept
 
@@ -141,7 +158,7 @@ if __name__ == "__main__":
 
     ### Do not modify below this line ###
 
-    path_to_directory = "../../../data/tensile/"
+    path_to_directory = "data/tensile/"
     path_to_samples = path_to_directory + material_folder + "/"
 
     # manually parse file to get gage diameter and then calculate cross-sectional area
@@ -165,7 +182,7 @@ if __name__ == "__main__":
     plt.title('Stress-Strain Curve for Sample ' + sample_name)
     plt.show()
 
-    # Step #2: Calculate basic parameters such as the ultimate tensile strength
+   ######################### Step #2: Calculate basic parameters such as the ultimate tensile strength
     # and fracture strain
 
     # calculate easy variables
@@ -175,10 +192,10 @@ if __name__ == "__main__":
         print("Error! Tensile Strength or Fracture Strain returned as -1. Did you complete the calculate_max_strength() method?")
         sys.exit(-1)
 
-    print("Ultimate Tensile Stress is ", ultimate_tensile_strength, "MPa")
-    print("Fracture Strain is ", 100 * fracture_strain, " percent")
+    print("Ultimate Tensile Stress is ",round(ultimate_tensile_strength,2), "MPa")
+    print("Fracture Strain is ", 100 * fracture_strain, "%")
 
-    # Step #3: Use the Secant Modulus at 40% of Peak Stress
+    ############### Step #3: Use the Secant Modulus at 40% of Peak Stress
     # to determine elastic modulus
 
     linear_index, slope, intercept = calculate_elastic_modulus(strain, stress)
@@ -187,7 +204,7 @@ if __name__ == "__main__":
         print("Incorrect value determined by calculate_elastic_modulus() did you implement that function?")
         sys.exit(-1)
 
-    print("Elastic Modulus is ", slope / 1000, 'GPa')
+    print("Elastic Modulus is ", round(slope / 1000, 2), 'GPa')
 
     # show the original curve indicating the secant modulus at 40%
     plt.scatter(strain, stress, label="Stress - Strain")
@@ -215,4 +232,5 @@ if __name__ == "__main__":
 
     plt.legend()
     plt.show()
+
 

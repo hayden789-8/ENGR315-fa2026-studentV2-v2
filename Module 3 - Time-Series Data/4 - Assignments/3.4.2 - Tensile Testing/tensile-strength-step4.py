@@ -59,10 +59,15 @@ def calculate_stress(force, sample_diameter):
     :param sample_diameter: The diameter of the sample in millimeters (mm)
     :return: An array of stresses experienced by the sample in MegaPascals (MPa)
     """
+##################### YOUR SOLUTION FROM STEP 1 TEMPLATE HERE ############################
+    #area(mm2)
+    area=math.pi*sample_diameter**2/4
 
-    ### YOUR SOLUTION FROM STEP 1 TEMPLATE HERE ###
+    #stress(mpa)
+    stress=force*1000/area
+    return stress
 
-    return None
+    
 
 
 def calculate_max_strength_strain(strain, stress):
@@ -75,9 +80,16 @@ def calculate_max_strength_strain(strain, stress):
     Fracture Strain: the maximum strain experienced before fracture
     """
 
-    ### YOUR SOLUTION FROM STEP 2 TEMPLATE HERE ###
+    ############### YOUR SOLUTION FROM STEP 2 TEMPLATE HERE ####################
 
-    return -1, -1
+    #max stress
+    ultimate_tensile_strength=np.max(stress)
+
+    #max strain
+    fracture_strain=np.max(strain)
+
+    return ultimate_tensile_strength,fracture_strain
+
 
 def calculate_elastic_modulus(strain, stress):
     """
@@ -98,7 +110,27 @@ def calculate_elastic_modulus(strain, stress):
 
     ### YOUR SOLUTION FROM STEP 3 TEMPLATE HERE ###
 
-    return linear_index, slope, intercept
+    #40% of peak stress
+    secant_strain=0.4*np.max(stress)
+
+    #difference between stress and 40% stress
+    diffs=np.abs(stress[:np.argmax(stress)+1]-secant_strain)
+
+    #index closest to 40% stress
+    linear_index=np.argmin(diffs)
+
+    #stress in region
+    linear_stress=stress[0:linear_index]
+
+    #strain in region
+    linear_strain=strain[0:linear_index]
+
+    #slope/intercept
+    slope,intercept=np.polyfit(linear_strain,linear_stress,1)
+
+    return linear_index,slope,intercept
+
+
 
 def calculate_percent_offset(slope, strain, stress):
     """
@@ -115,14 +147,20 @@ def calculate_percent_offset(slope, strain, stress):
     offset = 0.002
 
     # calculate the offset line: y=m(x-0.002) + 0
-    offset_line = None
+    
+    #.2% offset
+    offset_line =slope*(strain-offset)
 
     # measure distance from all points on graph to this line. Consider using the
     # abs() method to ensure values are positive
-    distance = None
+   
+    #abs distance between curves
+    distance =np.abs(stress-offset_line)
 
     # use argmin to find the index where the distance is minimal
-    intercept_index = -1
+    
+    #index with smallest difference
+    intercept_index =np.argmin(distance)
 
     return offset_line, intercept_index
 
@@ -136,9 +174,9 @@ if __name__ == "__main__":
     sample_name = "C01A1045CR_1"
 
 
-    ### Do not modify below this line ###
+    ######################## Do not modify below this line ################################
 
-    path_to_directory = "../../../data/tensile/"
+    path_to_directory = "data/tensile/"
     path_to_samples = path_to_directory + material_folder + "/"
 
     # manually parse file to get gage diameter and then calculate cross-sectional area
@@ -172,8 +210,8 @@ if __name__ == "__main__":
         print("Error! Tensile Strength or Fracture Strain returned as -1. Did you complete the calculate_max_strength() method?")
         sys.exit(-1)
 
-    print("Ultimate Tensile Stress is ", ultimate_tensile_strength, "MPa")
-    print("Fracture Strain is ", 100 * fracture_strain, " percent")
+    print("Ultimate Tensile Stress is ", round(ultimate_tensile_strength, 2), "MPa")
+    print("Fracture Strain is ", 100 * fracture_strain, "%")
 
     # Step #3: Use the Secant Modulus at 40% of Peak Stress
     # to determine elastic modulus
@@ -184,7 +222,7 @@ if __name__ == "__main__":
         print("Incorrect value determined by calculate_elastic_modulus() did you implement that function?")
         sys.exit(-1)
 
-    print("Elastic Modulus is ", slope / 1000, 'GPa')
+    print("Elastic Modulus is ", round(slope / 1000, 2), 'GPa')
 
     # show the original curve indicating the secant modulus at 40%
     plt.scatter(strain, stress, label="Stress - Strain")
@@ -221,7 +259,7 @@ if __name__ == "__main__":
         sys.exit(-1)
 
     # print out the results
-    print("The 0.2% Offset Yield is ", stress[intercept_index], " MPa")
+    print("The 0.2 % Offset Yield is ", round(stress[intercept_index], 2), " MPa")
 
     # create line parallel to linear region and find intersection with overall curve
     plt.scatter(strain, stress, label="Stress - Strain")

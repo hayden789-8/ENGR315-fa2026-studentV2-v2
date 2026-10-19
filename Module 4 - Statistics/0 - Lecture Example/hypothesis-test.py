@@ -104,7 +104,7 @@ yield strength of at least 500 MPa
 print('\nTesting yield strength...')
 
 # path to raw tensile data
-path_to_file = '../../data/tensile/tensile_data.csv'
+path_to_file = 'data/tensile/tensile_data.csv'
 
 # load all tensile data into data frame
 df = pd.read_csv(path_to_file)
@@ -128,8 +128,8 @@ stdev = yield_strength.std()
 (lower_range, upper_range) = norm.interval(confidence=0.95, loc=mean, scale=stdev)
 
 # print out the results
-print('For the 1045CR. The 95% confidence interval on the mean yield strength is: (', lower_ci, ",", upper_ci, ")")
-print('For the 1045CR. About 95% of individual samples fall within: (', lower_range, ",", upper_range, ")")
+print('For the 1045CR. The 95% confidence interval on the mean yield strength is: (', round(lower_ci, 2), ",", round(upper_ci, 2), ")")
+print('For the 1045CR. About 95% of individual samples fall within: (', round(lower_range, 2), ",", round(upper_range, 2), ")")
 
 # write down our expected values
 expected_yield_strength = 500
