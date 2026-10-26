@@ -20,7 +20,7 @@ alpha = 0.05
 # Null hypothesis is counts/distributions are "equal", alternative is they are "not equal"
 (chi_stat, p_value) = chisquare(f_obs=observed, f_exp=expected)
 
-print('Chi2 stat: ', chi_stat, 'p-value: ', p_value)
+print('Chi2 stat: ', round(chi_stat, 2), 'p-value: ', round(p_value, 2))
 
 if p_value < alpha:
     print('Reject null hypothesis. Counts are not equal.')
@@ -44,7 +44,7 @@ alpha = 0.05
 # Null hypothesis is counts/distributions are "equal", alternative is they are "not equal"
 (chi_stat, p_value) = chisquare(f_obs=observed, f_exp=expected)
 
-print('Chi2 stat: ', chi_stat, 'p-value: ', p_value)
+print('Chi2 stat: ', round(chi_stat, 2), 'p-value: ', round(p_value, 2))
 
 if p_value < alpha:
     print('Reject null hypothesis. Counts are not equal.')
@@ -94,7 +94,7 @@ alpha = 0.05
 # Null hypothesis is counts/distributions are "equal", alternative is they are "not equal"
 (chi_stat, p_value) = chisquare(f_obs=observed, f_exp=expected)
 
-print('Chi2 stat: ', chi_stat, 'p-value: ', p_value)
+print('Chi2 stat: ', round(chi_stat, 2), 'p-value: ', round(p_value, 2))
 
 if p_value < alpha:
     print('Reject null hypothesis. Counts are not equal.')
