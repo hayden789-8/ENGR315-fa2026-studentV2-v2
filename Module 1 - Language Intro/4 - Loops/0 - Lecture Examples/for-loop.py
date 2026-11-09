@@ -17,6 +17,6 @@ contribution = 1000
 # iterate over a sequence of numbers from [0,years)
 for i in range(0,years):
     balance = balance*(1+rate) + contribution
-    print('At end of year ', i+1, ' balance is ', balance)
+    print(f'At end of year {i+1} balance is ${balance:,.0f}')
 
 

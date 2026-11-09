@@ -35,6 +35,6 @@ print("Average is: ", avg)
 # determine if even or odd
 for n in new_list:
     if is_even(n):
-        print(n, " is even")
+        print(n,":Is even")
     else:
-        print(n, " is odd")
+        print(n,":Is odd")

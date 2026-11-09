@@ -13,7 +13,17 @@ Note: this problem does not require the "compounding interest" formula from the 
 """
 
 ### Your code here ###
+# Annual costs
+in_state_cost=30792
+out_state_cost=47882
 
-in_state_gift = 0
+# yearly rate
+return_rate=0.05
 
-out_state_gift = 0
+# gift calc
+in_state_gift=in_state_cost/return_rate
+out_state_gift=out_state_cost/return_rate
+
+#print
+print(f"In-state gift: ${in_state_gift:,.0f}")
+print(f"Out-of-state gift: ${out_state_gift:,.0f}")

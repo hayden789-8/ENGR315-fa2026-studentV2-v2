@@ -14,6 +14,22 @@ Note that Elon's capital will be $33B.
 
 ### all your code below ###
 
+#Elon's starting capital
+capital=33000000000
+
+#interest rates
+ten_year_rate=0.0396
+twenty_year_rate=0.0432
+
+#value after 10 years
+ten_year_final=capital*(1+ten_year_rate)**10
+
+#value after 20 years
+twenty_year_final=capital*(1+twenty_year_rate)**20
+
+#print
+print(f"10 year final:${ten_year_final:,.0f}")
+print(f"20 year final:${twenty_year_final:,.0f}")
 
 # final answer for 10-year
 ten_year_final = None

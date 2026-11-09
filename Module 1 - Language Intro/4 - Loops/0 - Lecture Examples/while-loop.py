@@ -16,6 +16,4 @@ while counter<years:
     balance = balance * (1+rate)
     counter=counter+1
 
-    print('End of Year ',counter, ' balance is ', balance)
-
-    
+    print(f'End of Year {counter} balance is ${balance:.0f}')

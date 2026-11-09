@@ -38,6 +38,7 @@ array = np.random.rand(length, length)
 # function returns multiple results
 (x, y, value) = find_min_loc(array, length, length)
 
-print("For array: ")
+print("For array:") 
 print(array)
-print("Min value is", value, " located at (" + str(x) + "," + str(y) + ")")
+print(f"Min value is {value:.4f}")
+print("located at (" + str(x) + "," + str(y) + ")")

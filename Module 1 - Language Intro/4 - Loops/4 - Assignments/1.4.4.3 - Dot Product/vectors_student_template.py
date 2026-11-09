@@ -28,7 +28,8 @@ Step 2: Iterate through the vector(s) and calculate the dot product
 dot_product = 0
 
 ### Your code here
-
+for i in range(fixed_length):
+    dot_product=dot_product+vector_a[i]*vector_b[i]
 """
 Step 3: Calculate the error of your dot_product compared with numpy's solution
 """
@@ -41,6 +42,6 @@ correct = np.dot(a_np, b_np)
 error = correct - dot_product
 
 # compare results
-print("Your result: ", dot_product)
-print("Correct result: ", correct)
-print("Error: ", error)
+print(f"Your result: {dot_product:,}")
+print(f"Correct result: {correct:,}")
+print(f"Error: {error:,}")

@@ -17,7 +17,7 @@ n = 10  # number of years to compound deposit
 
 # must cast n as 'string' so it can be printed in print()
 print("Initial principal is $" + str(principal))
-print("Interest rate is " + str(rate / 100))
+print("Interest rate is " + str(rate / 100)+"% ")
 print("Hold for " + str(n) + " years")
 
 # calculate the eventual result

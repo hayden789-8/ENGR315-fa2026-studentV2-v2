@@ -29,3 +29,23 @@ num_evens = 0
 num_odds = 0
 
 ### YOUR CODE BEGINS HERE ###
+#check numbers in the list
+for num in nums:
+
+    #check for even
+    # %=remainder, even number has a remainder of 0 when /2
+    if num%2==0:
+
+        # +1 to evens
+        num_evens=num_evens+1
+
+
+    else:
+
+        #+1 to odds
+        num_odds=num_odds+1
+
+#print 
+print(nums)
+print("Number of evens =",(num_evens))
+print("Number of odds =",(num_odds))
