@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.signal import find_peaks
 from ekg_testbench import EKGTestBench
 
 def detect_heartbeats(filepath):
@@ -16,13 +17,25 @@ def detect_heartbeats(filepath):
 
     # load data in matrix from CSV file; skip first two rows
     ## your code here
+    data=np.loadtxt(path,delimiter=',',skiprows=2)
 
     # save each vector as own variable
     ## your code here
 
-    # identify one column to process. Call that column signal
+    #time
+    time=data[:,0]
 
-    signal = -1 ## your code here
+    #mill ekg
+    mlii=data[:,1]
+
+    #v1 ekg
+    v1=data[:,2]
+
+
+
+   # identify one column to process. Call that column signal
+
+    signal =signal=mlii## your code here
 
     # pass data through LOW PASS FILTER (OPTIONAL)
     ## your code here
@@ -33,18 +46,34 @@ def detect_heartbeats(filepath):
     # pass data through differentiator
     ## your code here
 
+    #change between consecutive EKG measurements
+    diff=np.diff(signal,prepend=signal[0])
+
+
     # pass data through square function
     ## your code here
+
+#sqaure diff
+    squared=diff**2
 
     # pass through moving average window
     ## your code here
 
+#window size=30
+    window=30
+
+    #smooth sqaure signal
+    averaged=np.convolve(squared,np.ones(window)/window,mode='same')
+
+
     # use find_peaks to identify peaks within averaged/filtered data
     # save the peaks result and return as part of testbench result
 
-    ## your code here peaks,_ = find_peaks(....)
+    #peaks separated by 72
+    peaks,_=find_peaks(averaged,distance=72,prominence=np.percentile(averaged,95)*0.1)
 
-    beats = None
+
+    beats =peaks
 
     # do not modify this line
     return signal, beats
@@ -57,7 +86,7 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
     # database name
-    database_name = 'mitdb_201'
+    database_name = 'qtdb_sel104'
 
     # set to true if you wish to generate a debug file
     file_debug = False
@@ -71,7 +100,7 @@ if __name__ == "__main__":
     ### DO NOT MODIFY BELOW THIS LINE!!! ###
 
     # path to ekg folder
-    path_to_folder = "../../../data/ekg/"
+    path_to_folder = "data/ekg/"
 
     # select a signal file to run
     signal_filepath = path_to_folder + database_name + ".csv"
