@@ -26,6 +26,10 @@ def direct_solve(_A, _b):
 
     # YOUR CODE HERE #
 
+  #solve linear system
+    currents=np.linalg.solve(_A,_b)
+
+
     return currents
 
 
@@ -40,6 +44,12 @@ def verify_solution(_A, _b, _x):
     matches = None
 
     # YOUR CODE HERE #
+
+ #multiply matrix by estimated solution
+    calculated_b=np.dot(_A,_x)
+
+    #check calculated values match original values
+    matches=bool(np.allclose(calculated_b,_b))
 
     return calculated_b, matches
 
@@ -61,7 +71,42 @@ def jacobi_solve(_A, _b, _tolerance=0.001, _max_iterations=100):
     iterations = None
     converged = None
 
-    # YOUR CODE HERE #
+    # YOUR CODE HERE ############
+
+     #convert inputs into numpy arrays
+    A=np.array(_A,dtype=float)
+    b=np.array(_b,dtype=float)
+
+    #start with an initial guess=0
+    x=np.zeros(len(b))
+
+    #diagonal values of the matrix
+    D=np.diag(A)
+
+    #remove diagonal values from matrix
+    R=A-np.diag(D)
+
+    #initial iteration count/convergence status
+    iterations=0
+    converged=False
+
+    #repeat the jacobi until convergence/maximum iterations
+    for i in range(_max_iterations):
+
+        #new solution using the previous solution
+        x_new=(b-np.dot(R,x))/D
+
+        #count iterations
+        iterations=i+1
+
+        #check if the solution has converged
+        if np.max(np.abs(x_new-x))<_tolerance:
+            x=x_new
+            converged=True
+            break
+
+        #update solution for next iteration
+        x=x_new
 
     return x, iterations, converged
 
@@ -77,6 +122,9 @@ def scipy_iterative_solve(_A, _b, _rtol=1e-5):
     info = None
 
     # YOUR CODE HERE #
+
+ #solve system using with conjugate gradient
+    x,info=cg(_A,_b,rtol=_rtol)
 
     return x, info
 
